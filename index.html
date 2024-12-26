@@ -1,58 +1,51 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <style>
-        #cont {
-            margin: 20px auto;
-            width: 50%;
-            height: fit-content;
-            padding: 10px;
+        #cont{
+            margin:20px auto;
+            width:50%;
+            height:fit-content;
+            padding:10px;
             background-color: rgb(228, 231, 228);
             text-align: center;
-            font-size: 20px;
+            font-size:20px;
             font-weight: bold;
-
+            
         }
-
-        #cont h3 {
-            font-size: 15px;
-
+        #cont h3{
+            font-size:15px;
+            
         }
-
-        #addusersbtn {
+        #addusersbtn{
             background-color: rgb(160, 255, 105);
-            padding: 5px;
+            padding:5px;
             border-radius: 10px;
-            font-size: 20px;
-            font-weight: bold;
+            font-size:20px;
+            font-weight:bold;
         }
-
         #updatebtn {
             background-color: rgb(253, 255, 105);
-            padding: 5px;
+            padding:5px;
             border-radius: 10px;
-            font-size: 20px;
-            font-weight: bold;
+            font-size:20px;
+            font-weight:bold;
         }
-
         #deletebtn {
             background-color: rgb(255, 115, 105);
-            padding: 5px;
+            padding:5px;
             border-radius: 10px;
-            font-size: 20px;
-            font-weight: bold;
+            font-size:20px;
+            font-weight:bold;
         }
-
-        input[type="text"] {
-            height: 20px;
+        input[type="text"]{
+            height:20px;
         }
     </style>
 </head>
-
 <body>
     <input type="text" id="username" placeholder="Enter User Name">
     <button id="addusersbtn">Add User</button>
@@ -63,100 +56,98 @@
 <script>
 
     //1.Create: Add new users to the server.
-    let addusersbtn = document.getElementById("addusersbtn");
-
-    addusersbtn.addEventListener("click", async function () {
-        let username = document.getElementById("username").value;
-        try {
-            let res = await fetch("https://hip-lying-mongoose.glitch.me/users", {
-                method: "POST", // HTTP method (GET, POST, etc.)
-                headers: {
-                    "Content-Type": "application/json", // Data type
-                },
-                body: JSON.stringify({ username }), // Request payload
-            });
-            alert("User Added");
-            console.log("clicked")
+    let addusersbtn=document.getElementById("addusersbtn");
+ 
+    addusersbtn.addEventListener("click", async function(){
+        let username=document.getElementById("username").value;
+        try{
+let res= await fetch("https://hip-lying-mongoose.glitch.me/users", {
+  method: "POST", // HTTP method (GET, POST, etc.)
+  headers: {
+    "Content-Type": "application/json", // Data type
+  },
+  body: JSON.stringify({username}), // Request payload
+});
+alert("User Added");
+console.log("clicked")
         }
-        catch (err) {
-            console.log(err);
-            console.log("error")
+        catch(err){
+console.log(err);
+console.log("error")
         }
     })
 
     //2.Read: Retrieve all users from the server.
-    getUser();
+getUser();
 
-    async function getUser() {
-        try {
-            let res = await fetch("https://hip-lying-mongoose.glitch.me/users");
-            let data = await res.json();
-            console.log(data);
-            displayUser(data);
+    async function getUser(){
+        try{
+let res= await fetch("https://hip-lying-mongoose.glitch.me/users");
+let data=await res.json();
+console.log(data);
+displayUser(data);
         }
-        catch (err) {
+        catch(err){
 
         }
     }
 
     //function to display user
 
-    function displayUser(arr) {
-        let cont = document.getElementById("cont");
-        arr.map((el, i) => {
-
-            let user = document.createElement("h3");
-            user.textContent = `User Name: ${el.username}`
-            cont.append(user)
-        })
+    function displayUser(arr){
+        let cont=document.getElementById("cont");
+arr.map((el,i)=>{
+    
+    let user=document.createElement("h3");
+    user.textContent=`User Name: ${el.username}`
+    cont.append(user)
+})
     }
 
 
     //3.Update: Modify existing user details of id 1.
-
+    let updatebtn=document.getElementById("updatebtn");
     updatebtn.addEventListener("click", async function () {
-    if (confirm("Are You Sure?")) {
-        try {
-            let res = await fetch("https://hip-lying-mongoose.glitch.me/users/1", {
-                method: "PATCH",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ username: "Charlie" })
-            });
+        if(confirm("Are You Sure?")){
 
-            if (res.ok) {
-                alert("Data got updated");
-                getUser(); // Refresh the UI
-            } else {
-                alert("Failed to update user: " + res.status);
-            }
-        } catch (err) {
+       
+        try{
+let res=await fetch("https://hip-lying-mongoose.glitch.me/users/6", {
+  method: "PATCH", // HTTP method (GET, POST, etc.)
+  headers: {
+    "Content-Type": "application/json", // Data type
+  },
+  body: JSON.stringify({username:"Charlie"}), // Request payload
+});
+        
+alert("Data got updated");
+        }
+        catch(err){
             console.log(err);
         }
     }
-});
+        
+    })
 
 
-    //4.Delete: Remove a user from the server of id 1.
+//4.Delete: Remove a user from the server of id 1.
 
+let deletebtn=document.getElementById("deletebtn");
     deletebtn.addEventListener("click", async function () {
-    if (confirm("Are You Sure?")) {
-        try {
-            let res = await fetch("https://hip-lying-mongoose.glitch.me/users/1", {
-                method: "DELETE"
-            });
-
-            if (res.ok) {
-                alert("Data got Deleted");
-                getUser(); // Refresh the UI
-            } else {
-                alert("Failed to delete user: " + res.status);
-            }
-        } catch (err) {
+        try{
+let res=await fetch("https://hip-lying-mongoose.glitch.me/users/5", {
+  method: "DELETE", // HTTP method (GET, POST, etc.)
+  headers: {
+    "Content-Type": "application/json", // Data type
+  } // Request payload
+});
+confirm("Are You Sure?");
+alert("Data got Deleted");
+        }
+        catch(err){
             console.log(err);
         }
-    }
-});
+    })
 
 </script>
-
 </html>
