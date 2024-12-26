@@ -62,100 +62,113 @@
 </body>
 <script>
 
-    //1.Create: Add new users to the server.
-    let addusersbtn = document.getElementById("addusersbtn");
+<script>
+    // 1. Create: Add new users to the server
 
+    let addusersbtn = document.getElementById("addusersbtn");
     addusersbtn.addEventListener("click", async function () {
         let username = document.getElementById("username").value;
         try {
-            let res = await fetch("https://turquoise-future-rib.glitch.me/users", {
-                method: "POST", // HTTP method (GET, POST, etc.)
+            let res = await fetch("https://hip-lying-mongoose.glitch.me/users", {
+                method: "POST",
                 headers: {
-                    "Content-Type": "application/json", // Data type
+                    "Content-Type": "application/json",
                 },
-                body: JSON.stringify({ username }), // Request payload
+                body: JSON.stringify({ username }),
             });
-            alert("User Added");
-            console.log("clicked")
-        }
-        catch (err) {
-            console.log(err);
-            console.log("error")
-        }
-    })
 
-    //2.Read: Retrieve all users from the server.
+            if (res.ok) {
+                alert("User Added");
+                getUser(); // Refresh the user list
+            } else {
+                alert("Failed to Add User");
+            }
+        } catch (err) {
+            console.error("Error adding user:", err);
+        }
+    });
+
+    // 2. Read: Retrieve all users from the server
+
     getUser();
 
     async function getUser() {
         try {
-            let res = await fetch("https://turquoise-future-rib.glitch.me/users");
+            let res = await fetch("https://hip-lying-mongoose.glitch.me/users");
             let data = await res.json();
-            console.log(data);
+            console.log(data); // Debug API response
             displayUser(data);
-        }
-        catch (err) {
-
+        } catch (err) {
+            console.error("Error fetching users:", err);
         }
     }
 
-    //function to display user
+    // Function to display user list
 
     function displayUser(arr) {
         let cont = document.getElementById("cont");
-        arr.map((el, i) => {
+        cont.innerHTML = "List of Users"; // Clear container
 
+        arr.forEach((el, i) => {
             let user = document.createElement("h3");
-            user.textContent = `User Name: ${el.username}`
-            cont.append(user)
-        })
+            user.textContent = `User Name: ${el.username ? el.username : "No username available"}`;
+            cont.append(user);
+        });
     }
 
+    // 3. Update: Modify existing user details of ID 1
 
-    //3.Update: Modify existing user details of id 1.
     let updatebtn = document.getElementById("updatebtn");
     updatebtn.addEventListener("click", async function () {
         if (confirm("Are You Sure?")) {
-
-
             try {
-                let res = await fetch("https://turquoise-future-rib.glitch.me/users", {
-                    method: "PATCH", // HTTP method (GET, POST, etc.)
+                let res = await fetch("https://hip-lying-mongoose.glitch.me/users/1", {
+                    method: "PATCH",
                     headers: {
-                        "Content-Type": "application/json", // Data type
+                        "Content-Type": "application/json",
                     },
-                    body: JSON.stringify({ username: "Charlie" }), // Request payload
+                    body: JSON.stringify({ username: "Charlie" }),
                 });
 
-                alert("Data got updated");
-            }
-            catch (err) {
-                console.log(err);
+                if (res.ok) {
+                    alert("User Updated Successfully");
+                    getUser(); // Refresh the user list
+                } else {
+                    alert("Failed to Update User");
+                }
+            } catch (err) {
+                console.error("Error updating user:", err);
             }
         }
+    });
 
-    })
-
-
-    //4.Delete: Remove a user from the server of id 1.
+    // 4. Delete: Remove a user from the server of ID 1
 
     let deletebtn = document.getElementById("deletebtn");
     deletebtn.addEventListener("click", async function () {
-        try {
-            let res = await fetch("https://turquoise-future-rib.glitch.me/users", {
-                method: "DELETE", // HTTP method (GET, POST, etc.)
-                headers: {
-                    "Content-Type": "application/json", // Data type
-                } // Request payload
-            });
-            confirm("Are You Sure?");
-            alert("Data got Deleted");
-        }
-        catch (err) {
-            console.log(err);
-        }
-    })
+        if (confirm("Are You Sure?")) {
+            try {
+                let res = await fetch("https://hip-lying-mongoose.glitch.me/users/1", {
+                    method: "DELETE",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                });
 
+                if (res.ok) {
+                    alert("User Deleted Successfully");
+                    getUser(); // Refresh the user list
+                } else {
+                    alert("Failed to Delete User");
+                }
+            } catch (err) {
+                console.error("Error deleting user:", err);
+            }
+        }
+    });
+</script>
+
+   
 </script>
 
 </html>
